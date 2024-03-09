@@ -1,0 +1,34 @@
+This is called a relationship , which means that the Address table is related to the Users table.
+When defining the table, you need to define the relationship 
+
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE addresses (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    pincode VARCHAR(20),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+); 
+
+
+Joins 
+
+What’s hard is joining  data from two (or more) tables together.
+
+For example, if I ask you to fetch me a users details and  their address, what SQL would you run?
+
+SELECT u.id, u.username, u.email, a.city, a.country, a.street, a.pincode
+FROM users u
+JOIN addresses a ON u.id = a.user_id
+WHERE u.id = YOUR_USER_ID;
